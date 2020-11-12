@@ -3,24 +3,47 @@
  * Program to count the words in a text.
  */
 
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class WordCount {
 
+
   public static void main(String[] args) {
-    /*
-    testWordCount();
-    testWordCountEmptyText();
-    testWordCountEmptyTextWithOtherChars();
-    getUserTextTest();
-     */
+    String fileName = "./src/stopwords.txt";
     //prompt the user for input
     System.out.print("Enter text: ");
     String userText = requestUserText();
-    int count = wordCount(userText);
+    Set<String> wordsToExclude = getTextToExclude(fileName);
+    int count = wordCount(userText, wordsToExclude);
     System.out.println("Number of words: " + count);
+    //getTextToExcludeTest();
+  }
 
+  /* Returns the set of words from a file */
+  public static Set<String> getTextToExclude(String fileName) {
+    /* assumption file name is provided */
+
+    if (fileName == null || fileName.isEmpty()) return new HashSet<>(); // handle gracefully
+    Set<String> wordsToExclude = new HashSet<>();
+
+    try {
+      File myObj = new File(fileName);
+      Scanner in = new Scanner(myObj);
+      while (in.hasNextLine()) {
+        String data = in.nextLine();
+        wordsToExclude.add(data);
+        //System.out.println(data);
+      }
+      in.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    return wordsToExclude;
   }
 
   /* Return the input of the user */
@@ -32,12 +55,10 @@ public class WordCount {
   }
 
   /* Return the number of words in a text
-  *
    * split the word into tokens
    * iterate through and count.
-   *
    */
-  public static int wordCount(String text) {
+  public static int wordCount(String text, Set<String> wordsToExclude) {
     int count = 0;
     // if text is null or empty return 0
     if (text == null || text.isEmpty())  return 0;
@@ -45,55 +66,13 @@ public class WordCount {
 
     // count the words that are not alphabets (a-z, A-Z)
     for (int i=0; i<tokens.length; i++) {
-      if (!tokens[i].isEmpty()) {
+      String word = tokens[i];
+      // Don't want to count the specified words in the set
+      if (!word.isEmpty() && (!wordsToExclude.contains(word))) {
         count += 1;
       }
     }
     return count;
-  }
-
-  // TESTS
-  private static void getUserTextTest() {
-    String expected = "john";
-    String text = requestUserText();
-
-    if (expected.equals(text)) {
-      System.out.println("Correct " + text);
-    } else {
-      System.out.println("Wrong " + text);
-    }
-  }
-
-  /* Word count test */
-  private static void testWordCount() {
-    String word =  "My  name is.Sam    ";
-    int count = wordCount(word);
-    if (count == 4) {
-      System.out.println("Correct " + count);
-    } else {
-      System.out.println("Wrong " + count);
-    }
-  }
-
-  /* Word count test */
-  private static void testWordCountEmptyText() {
-    String word = null;// "My name is Sam";
-    int count = wordCount(word);
-    if (count == 0) {
-      System.out.println("Correct " + count);
-    } else {
-      System.out.println("Wrong " + count);
-    }
-  }
-  /* Word count test */
-  private static void testWordCountEmptyTextWithOtherChars() {
-    String word = "Always. in, motion\\ the future is";// "My name is Sam";
-    int count = wordCount(word);
-    if (count == 6) {
-      System.out.println("Correct " + count);
-    } else {
-      System.out.println("Wrong " + count);
-    }
   }
 
   }
