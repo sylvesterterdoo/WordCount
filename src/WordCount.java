@@ -55,9 +55,6 @@ public class WordCount {
   }
 
 
-  /* Return the number of unique words in the text.
-   * Ensure the skip word are also excluded.
-   */
 
   /* Return the Result which contains the wordCount and words in text */
   public static Result wordCount(String text, Set<String> wordsToExclude) {

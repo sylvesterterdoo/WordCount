@@ -1,6 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class WordCountTest {
 
@@ -15,6 +16,7 @@ public class WordCountTest {
   }
 
   /* word count test with unique words */
+  @Test
   private static void testWordCountWithDash() {
     Set<String> words = new HashSet<>();
     words.add("the");
@@ -32,6 +34,7 @@ public class WordCountTest {
 
 
   /* Test the word count with some words to exclude */
+  @Test
   private static void wordCountWithExcludeWords() {
     Set<String> words = new HashSet<>();
     words.add("the");
@@ -45,6 +48,7 @@ public class WordCountTest {
   }
 
   /* Test the exclude words are not counted. */
+  @Test
   private static void getTextToExcludeTest() {
     Set<String> words = new HashSet<>();
     words.add("the");
@@ -62,6 +66,7 @@ public class WordCountTest {
     System.out.println("Correct");
   }
 
+  @Test
   private static void getUserTextTest() {
     String expected = "john";
     System.out.println("Enter text: ");
