@@ -11,21 +11,23 @@ import java.util.Set;
 
 public class WordCount {
 
+  public static final String fileName = "./src/stopwords.txt";
 
+  /* Main function */
   public static void main(String[] args) {
-    String fileName = "./src/stopwords.txt";
+
     //prompt the user for input
     System.out.print("Enter text: ");
     String userText = requestUserText();
     Set<String> wordsToExclude = getTextToExclude(fileName);
-    int count = wordCount(userText, wordsToExclude);
-    System.out.println("Number of words: " + count);
-    //getTextToExcludeTest();
+    Result result = wordCount(userText, wordsToExclude);
+    System.out.println("Number of words: " + result.getWordCount());
+    System.out.println("unique: " + result.getUniquWords());
+
   }
 
   /* Returns the set of words from a file */
   public static Set<String> getTextToExclude(String fileName) {
-    /* assumption file name is provided */
 
     if (fileName == null || fileName.isEmpty()) return new HashSet<>(); // handle gracefully
     Set<String> wordsToExclude = new HashSet<>();
@@ -36,7 +38,6 @@ public class WordCount {
       while (in.hasNextLine()) {
         String data = in.nextLine();
         wordsToExclude.add(data);
-        //System.out.println(data);
       }
       in.close();
     } catch (FileNotFoundException e) {
@@ -48,31 +49,37 @@ public class WordCount {
 
   /* Return the input of the user */
   public static String requestUserText() {
-    Scanner in = new Scanner(System.in);
-    // assuming the user cooperates [strings is sensibles] :)
+    Scanner in = new Scanner(System.in); // assuming the user cooperates TODO: check to string is sensibles
     String text = in.nextLine();
     return text;
   }
 
-  /* Return the number of words in a text
-   * split the word into tokens
-   * iterate through and count.
+
+  /* Return the number of unique words in the text.
+   * Ensure the skip word are also excluded.
    */
-  public static int wordCount(String text, Set<String> wordsToExclude) {
+
+  /* Return the Result which contains the wordCount and words in text */
+  public static Result wordCount(String text, Set<String> wordsToExclude) {
+    Result result = new Result();
     int count = 0;
-    // if text is null or empty return 0
-    if (text == null || text.isEmpty())  return 0;
-    String[] tokens = text.split("[^a-zA-Z]");
+    Set<String> uniqueWords = new HashSet<>();
+
+    if (text == null || text.isEmpty())  return new Result();
 
     // count the words that are not alphabets (a-z, A-Z)
+    String[] tokens = text.split("[^a-zA-Z]");
     for (int i=0; i<tokens.length; i++) {
       String word = tokens[i];
-      // Don't want to count the specified words in the set
+      // Don't want to count the words in the set
       if (!word.isEmpty() && (!wordsToExclude.contains(word))) {
+        uniqueWords.add(word);
         count += 1;
       }
     }
-    return count;
+    result.setWordCount(count);
+    result.setUniquWords(uniqueWords.size());
+    return result;
   }
 
   }
