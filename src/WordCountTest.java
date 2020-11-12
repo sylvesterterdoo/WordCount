@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.Assert;
@@ -27,8 +25,8 @@ public class WordCountTest {
     String text = "Humpty-Dumpty sat on a wall. Humpty-Dumpty had a great fall.";
    int result = WordCount.wordCount(text, words).getWordCount();
    int uniquResult = WordCount.wordCount(text, words).getUniquWords();
-   Assert.assertEquals(9, result);
-   Assert.assertEquals(7, uniquResult);
+   Assert.assertEquals(7, result);
+   Assert.assertEquals(6, uniquResult);
   }
 
 

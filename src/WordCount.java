@@ -68,7 +68,7 @@ public class WordCount {
     if (text == null || text.isEmpty())  return new Result();
 
     // count the words that are not alphabets (a-z, A-Z)
-    String[] tokens = text.split("[^a-zA-Z]");
+    String[] tokens = text.split("[^a-zA-Z-]");
     for (int i=0; i<tokens.length; i++) {
       String word = tokens[i];
       // Don't want to count the words in the set
